@@ -1,0 +1,60 @@
+using namespace std;
+
+#include <iostream>
+
+#include "moduleMesh.h"
+
+int main (int argc, const char * argv[])
+{
+  meshC myMesh;
+
+  bool ascii=0;
+  
+  cout << "programme de test" << endl;
+  
+  myMesh.nlog=6;
+  cout << "myMesh.nlog="<< myMesh.nlog << endl;
+
+  myMesh.nVert=0;
+  myMesh.nSol =0;
+  myMesh.nFld =0;
+
+  
+  myMesh.mesh_name[0]='T';
+  myMesh.mesh_name[1]='e';
+  myMesh.mesh_name[2]='t';
+  myMesh.mesh_name[3]='r';
+  myMesh.mesh_name[4]='a';
+  myMesh.mesh_name[5]='\0';
+   
+  myMesh.solu=NULL;
+
+  cout << "myMesh.mesh_name=" << myMesh.mesh_name << endl;
+
+  read_mesh(&myMesh);
+
+  cout << "Lecture terminee" << endl;
+  cout << "myMesh.nT4=" << myMesh.nT4 << endl;
+  cout << "myMesh.tetra=" << endl
+                          << myMesh.tetra[0] 
+                          << endl
+                          << myMesh.tetra[1] 
+                          << endl
+                          << myMesh.tetra[2]
+                          << endl
+                          << myMesh.tetra[3] 
+                          << endl
+                          << myMesh.tetra[4] 
+                          << endl;
+   
+  return;
+   
+  cflAnalyser(&myMesh ,&ascii);
+  cout << "Analyse CFL terminee ascii:" << ascii  << endl;
+
+  cout << "Les tests sont termines" << endl;
+
+
+  return 0;
+}
+

@@ -1,0 +1,986 @@
+! Generated automatically by libmesh5.2
+
+module M_libmesh5_api
+
+  interface
+    integer function gmfopenmeshf77(FilNam, mod, ver, dim)
+    character(len=*) :: FilNam
+    integer          :: mod, ver, dim
+    end function GmfOpenMeshF77
+  end interface
+
+interface
+  integer function gmfclosemeshf77(MshIdx)
+    integer   :: MshIdx
+  end function GmfCloseMeshF77
+end interface
+
+interface
+  integer function gmfstatkwdf77(MshIdx, KwdIdx, NmbTyp, SolSiz, TypTab)
+    integer :: MshIdx, KwdIdx, NmbTyp, SolSiz, TypTab(*)
+  end function GmfStatKwdF77
+end interface
+
+interface
+  integer function gmfsetkwdf77(MshIdx, KwdIdx, NmbLin, NmbTyp, TypTab)
+    integer :: MshIdx, KwdIdx,NmbLin, NmbTyp, TypTab(*)
+  end function GmfSetKwdF77
+end interface
+
+interface
+  integer function gmfgotokwdf77(MshIdx, KwdIdx)
+  integer   :: MshIdx, KwdIdx
+  end function GmfGotoKwdF77
+end interface
+
+interface
+  subroutine gmfgetvertex2dr4(MshIdx, r0, r1, i2)
+  integer :: MshIdx
+  real(4) :: r0
+  real(4) :: r1
+  integer :: i2
+  end subroutine gmfgetvertex2dr4
+end interface
+
+interface
+  subroutine gmfgetvertex2dr8(MshIdx, r0, r1, i2)
+  integer :: MshIdx
+  real(8) :: r0
+  real(8) :: r1
+  integer :: i2
+  end subroutine gmfgetvertex2dr8
+end interface
+
+interface
+  subroutine gmfgetvertex3dr4(MshIdx, r0, r1, r2, i3)
+  integer :: MshIdx
+  real(4) :: r0
+  real(4) :: r1
+  real(4) :: r2
+  integer :: i3
+  end subroutine gmfgetvertex3dr4
+end interface
+
+interface
+  subroutine gmfgetvertex3dr8(MshIdx, r0, r1, r2, i3)
+  integer :: MshIdx
+  real(8) :: r0
+  real(8) :: r1
+  real(8) :: r2
+  integer :: i3
+  end subroutine gmfgetvertex3dr8
+end interface
+
+interface
+  subroutine gmfsetvertex2dr4(MshIdx, r0, r1, i2)
+  integer :: MshIdx
+  real(4) :: r0
+  real(4) :: r1
+  integer :: i2
+  end subroutine gmfsetvertex2dr4
+end interface
+
+interface
+  subroutine gmfsetvertex2dr8(MshIdx, r0, r1, i2)
+  integer :: MshIdx
+  real(8) :: r0
+  real(8) :: r1
+  integer :: i2
+  end subroutine gmfsetvertex2dr8
+end interface
+
+interface
+  subroutine gmfsetvertex3dr4(MshIdx, r0, r1, r2, i3)
+  integer :: MshIdx
+  real(4) :: r0
+  real(4) :: r1
+  real(4) :: r2
+  integer :: i3
+  end subroutine gmfsetvertex3dr4
+end interface
+
+interface
+  subroutine gmfsetvertex3dr8(MshIdx, r0, r1, r2, i3)
+  integer :: MshIdx
+  real(8) :: r0
+  real(8) :: r1
+  real(8) :: r2
+  integer :: i3
+  end subroutine gmfsetvertex3dr8
+end interface
+
+interface
+  subroutine gmfgetedge(MshIdx, i0, i1, i2)
+  integer :: MshIdx
+  integer :: i0
+  integer :: i1
+  integer :: i2
+  end subroutine gmfgetedge
+end interface
+
+interface
+  subroutine gmfsetedge(MshIdx, i0, i1, i2)
+  integer :: MshIdx
+  integer :: i0
+  integer :: i1
+  integer :: i2
+  end subroutine gmfsetedge
+end interface
+
+interface
+  subroutine gmfgettriangle(MshIdx, i0, i1, i2, i3)
+  integer :: MshIdx
+  integer :: i0
+  integer :: i1
+  integer :: i2
+  integer :: i3
+  end subroutine gmfgettriangle
+end interface
+
+interface
+  subroutine gmfsettriangle(MshIdx, i0, i1, i2, i3)
+  integer :: MshIdx
+  integer :: i0
+  integer :: i1
+  integer :: i2
+  integer :: i3
+  end subroutine gmfsettriangle
+end interface
+
+interface
+  subroutine gmfgetquadrilateral(MshIdx, i0, i1, i2, i3, i4)
+  integer :: MshIdx
+  integer :: i0
+  integer :: i1
+  integer :: i2
+  integer :: i3
+  integer :: i4
+  end subroutine gmfgetquadrilateral
+end interface
+
+interface
+  subroutine gmfsetquadrilateral(MshIdx, i0, i1, i2, i3, i4)
+  integer :: MshIdx
+  integer :: i0
+  integer :: i1
+  integer :: i2
+  integer :: i3
+  integer :: i4
+  end subroutine gmfsetquadrilateral
+end interface
+
+interface
+  subroutine gmfgettetrahedron(MshIdx, i0, i1, i2, i3, i4)
+  integer :: MshIdx
+  integer :: i0
+  integer :: i1
+  integer :: i2
+  integer :: i3
+  integer :: i4
+  end subroutine gmfgettetrahedron
+end interface
+
+interface
+  subroutine gmfsettetrahedron(MshIdx, i0, i1, i2, i3, i4)
+  integer :: MshIdx
+  integer :: i0
+  integer :: i1
+  integer :: i2
+  integer :: i3
+  integer :: i4
+  end subroutine gmfsettetrahedron
+end interface
+
+interface
+  subroutine gmfgetpentahedron(MshIdx, i0, i1, i2, i3, i4, i5, i6)
+  integer :: MshIdx
+  integer :: i0
+  integer :: i1
+  integer :: i2
+  integer :: i3
+  integer :: i4
+  integer :: i5
+  integer :: i6
+  end subroutine gmfgetpentahedron
+end interface
+
+interface
+  subroutine gmfsetpentahedron(MshIdx, i0, i1, i2, i3, i4, i5, i6)
+  integer :: MshIdx
+  integer :: i0
+  integer :: i1
+  integer :: i2
+  integer :: i3
+  integer :: i4
+  integer :: i5
+  integer :: i6
+  end subroutine gmfsetpentahedron
+end interface
+
+interface
+  subroutine gmfgethexahedron(MshIdx, i0, i1, i2, i3, i4, i5, i6, i7, i8)
+  integer :: MshIdx
+  integer :: i0
+  integer :: i1
+  integer :: i2
+  integer :: i3
+  integer :: i4
+  integer :: i5
+  integer :: i6
+  integer :: i7
+  integer :: i8
+  end subroutine gmfgethexahedron
+end interface
+
+interface
+  subroutine gmfsethexahedron(MshIdx, i0, i1, i2, i3, i4, i5, i6, i7, i8)
+  integer :: MshIdx
+  integer :: i0
+  integer :: i1
+  integer :: i2
+  integer :: i3
+  integer :: i4
+  integer :: i5
+  integer :: i6
+  integer :: i7
+  integer :: i8
+  end subroutine gmfsethexahedron
+end interface
+
+interface
+  subroutine gmfgetcorner(MshIdx, i0)
+  integer :: MshIdx
+  integer :: i0
+  end subroutine gmfgetcorner
+end interface
+
+interface
+  subroutine gmfsetcorner(MshIdx, i0)
+  integer :: MshIdx
+  integer :: i0
+  end subroutine gmfsetcorner
+end interface
+
+interface
+  subroutine gmfgetridge(MshIdx, i0)
+  integer :: MshIdx
+  integer :: i0
+  end subroutine gmfgetridge
+end interface
+
+interface
+  subroutine gmfsetridge(MshIdx, i0)
+  integer :: MshIdx
+  integer :: i0
+  end subroutine gmfsetridge
+end interface
+
+interface
+  subroutine gmfgetrequiredvertex(MshIdx, i0)
+  integer :: MshIdx
+  integer :: i0
+  end subroutine gmfgetrequiredvertex
+end interface
+
+interface
+  subroutine gmfsetrequiredvertex(MshIdx, i0)
+  integer :: MshIdx
+  integer :: i0
+  end subroutine gmfsetrequiredvertex
+end interface
+
+interface
+  subroutine gmfgetrequirededge(MshIdx, i0)
+  integer :: MshIdx
+  integer :: i0
+  end subroutine gmfgetrequirededge
+end interface
+
+interface
+  subroutine gmfsetrequirededge(MshIdx, i0)
+  integer :: MshIdx
+  integer :: i0
+  end subroutine gmfsetrequirededge
+end interface
+
+interface
+  subroutine gmfgetrequiredtriangle(MshIdx, i0)
+  integer :: MshIdx
+  integer :: i0
+  end subroutine gmfgetrequiredtriangle
+end interface
+
+interface
+  subroutine gmfsetrequiredtriangle(MshIdx, i0)
+  integer :: MshIdx
+  integer :: i0
+  end subroutine gmfsetrequiredtriangle
+end interface
+
+interface
+  subroutine gmfgetrequiredquadrilateral(MshIdx, i0)
+  integer :: MshIdx
+  integer :: i0
+  end subroutine gmfgetrequiredquadrilateral
+end interface
+
+interface
+  subroutine gmfsetrequiredquadrilateral(MshIdx, i0)
+  integer :: MshIdx
+  integer :: i0
+  end subroutine gmfsetrequiredquadrilateral
+end interface
+
+interface
+  subroutine gmfgettangentatedgevertex(MshIdx, i0, i1, i2)
+  integer :: MshIdx
+  integer :: i0
+  integer :: i1
+  integer :: i2
+  end subroutine gmfgettangentatedgevertex
+end interface
+
+interface
+  subroutine gmfsettangentatedgevertex(MshIdx, i0, i1, i2)
+  integer :: MshIdx
+  integer :: i0
+  integer :: i1
+  integer :: i2
+  end subroutine gmfsettangentatedgevertex
+end interface
+
+interface
+  subroutine gmfgetnormalatvertex(MshIdx, i0, i1)
+  integer :: MshIdx
+  integer :: i0
+  integer :: i1
+  end subroutine gmfgetnormalatvertex
+end interface
+
+interface
+  subroutine gmfsetnormalatvertex(MshIdx, i0, i1)
+  integer :: MshIdx
+  integer :: i0
+  integer :: i1
+  end subroutine gmfsetnormalatvertex
+end interface
+
+interface
+  subroutine gmfgetnormalattrianglevertex(MshIdx, i0, i1, i2)
+  integer :: MshIdx
+  integer :: i0
+  integer :: i1
+  integer :: i2
+  end subroutine gmfgetnormalattrianglevertex
+end interface
+
+interface
+  subroutine gmfsetnormalattrianglevertex(MshIdx, i0, i1, i2)
+  integer :: MshIdx
+  integer :: i0
+  integer :: i1
+  integer :: i2
+  end subroutine gmfsetnormalattrianglevertex
+end interface
+
+interface
+  subroutine gmfgetnormalatquadrilateralvertex(MshIdx, i0, i1, i2, i3)
+  integer :: MshIdx
+  integer :: i0
+  integer :: i1
+  integer :: i2
+  integer :: i3
+  end subroutine gmfgetnormalatquadrilateralvertex
+end interface
+
+interface
+  subroutine gmfsetnormalatquadrilateralvertex(MshIdx, i0, i1, i2, i3)
+  integer :: MshIdx
+  integer :: i0
+  integer :: i1
+  integer :: i2
+  integer :: i3
+  end subroutine gmfsetnormalatquadrilateralvertex
+end interface
+
+interface
+  subroutine gmfgettangent2dr4(MshIdx, r0, r1)
+  integer :: MshIdx
+  real(4) :: r0
+  real(4) :: r1
+  end subroutine gmfgettangent2dr4
+end interface
+
+interface
+  subroutine gmfgettangent2dr8(MshIdx, r0, r1)
+  integer :: MshIdx
+  real(8) :: r0
+  real(8) :: r1
+  end subroutine gmfgettangent2dr8
+end interface
+
+interface
+  subroutine gmfgettangent3dr4(MshIdx, r0, r1, r2)
+  integer :: MshIdx
+  real(4) :: r0
+  real(4) :: r1
+  real(4) :: r2
+  end subroutine gmfgettangent3dr4
+end interface
+
+interface
+  subroutine gmfgettangent3dr8(MshIdx, r0, r1, r2)
+  integer :: MshIdx
+  real(8) :: r0
+  real(8) :: r1
+  real(8) :: r2
+  end subroutine gmfgettangent3dr8
+end interface
+
+interface
+  subroutine gmfsettangent2dr4(MshIdx, r0, r1)
+  integer :: MshIdx
+  real(4) :: r0
+  real(4) :: r1
+  end subroutine gmfsettangent2dr4
+end interface
+
+interface
+  subroutine gmfsettangent2dr8(MshIdx, r0, r1)
+  integer :: MshIdx
+  real(8) :: r0
+  real(8) :: r1
+  end subroutine gmfsettangent2dr8
+end interface
+
+interface
+  subroutine gmfsettangent3dr4(MshIdx, r0, r1, r2)
+  integer :: MshIdx
+  real(4) :: r0
+  real(4) :: r1
+  real(4) :: r2
+  end subroutine gmfsettangent3dr4
+end interface
+
+interface
+  subroutine gmfsettangent3dr8(MshIdx, r0, r1, r2)
+  integer :: MshIdx
+  real(8) :: r0
+  real(8) :: r1
+  real(8) :: r2
+  end subroutine gmfsettangent3dr8
+end interface
+
+interface
+  subroutine gmfgetnormal2dr4(MshIdx, r0, r1)
+  integer :: MshIdx
+  real(4) :: r0
+  real(4) :: r1
+  end subroutine gmfgetnormal2dr4
+end interface
+
+interface
+  subroutine gmfgetnormal2dr8(MshIdx, r0, r1)
+  integer :: MshIdx
+  real(8) :: r0
+  real(8) :: r1
+  end subroutine gmfgetnormal2dr8
+end interface
+
+interface
+  subroutine gmfgetnormal3dr4(MshIdx, r0, r1, r2)
+  integer :: MshIdx
+  real(4) :: r0
+  real(4) :: r1
+  real(4) :: r2
+  end subroutine gmfgetnormal3dr4
+end interface
+
+interface
+  subroutine gmfgetnormal3dr8(MshIdx, r0, r1, r2)
+  integer :: MshIdx
+  real(8) :: r0
+  real(8) :: r1
+  real(8) :: r2
+  end subroutine gmfgetnormal3dr8
+end interface
+
+interface
+  subroutine gmfsetnormal2dr4(MshIdx, r0, r1)
+  integer :: MshIdx
+  real(4) :: r0
+  real(4) :: r1
+  end subroutine gmfsetnormal2dr4
+end interface
+
+interface
+  subroutine gmfsetnormal2dr8(MshIdx, r0, r1)
+  integer :: MshIdx
+  real(8) :: r0
+  real(8) :: r1
+  end subroutine gmfsetnormal2dr8
+end interface
+
+interface
+  subroutine gmfsetnormal3dr4(MshIdx, r0, r1, r2)
+  integer :: MshIdx
+  real(4) :: r0
+  real(4) :: r1
+  real(4) :: r2
+  end subroutine gmfsetnormal3dr4
+end interface
+
+interface
+  subroutine gmfsetnormal3dr8(MshIdx, r0, r1, r2)
+  integer :: MshIdx
+  real(8) :: r0
+  real(8) :: r1
+  real(8) :: r2
+  end subroutine gmfsetnormal3dr8
+end interface
+
+interface
+  subroutine gmfgettangentatvertex(MshIdx, i0, i1)
+  integer :: MshIdx
+  integer :: i0
+  integer :: i1
+  end subroutine gmfgettangentatvertex
+end interface
+
+interface
+  subroutine gmfsettangentatvertex(MshIdx, i0, i1)
+  integer :: MshIdx
+  integer :: i0
+  integer :: i1
+  end subroutine gmfsettangentatvertex
+end interface
+
+interface
+  subroutine gmfgetsolatvertexr4(MshIdx, SolTab)
+  integer :: MshIdx
+  real(4) :: SolTab(*)
+  end subroutine gmfgetsolatvertexr4
+end interface
+
+interface
+  subroutine gmfgetsolatvertexr8(MshIdx, SolTab)
+  integer :: MshIdx
+  real(8) :: SolTab(*)
+  end subroutine gmfgetsolatvertexr8
+end interface
+
+interface
+  subroutine gmfsetsolatvertexr4(MshIdx, SolTab)
+  integer :: MshIdx
+  real(4) :: SolTab(*)
+  end subroutine gmfsetsolatvertexr4
+end interface
+
+interface
+  subroutine gmfsetsolatvertexr8(MshIdx, SolTab)
+  integer :: MshIdx
+  real(8) :: SolTab(*)
+  end subroutine gmfsetsolatvertexr8
+end interface
+
+interface
+  subroutine gmfgetsolatedger4(MshIdx, SolTab)
+  integer :: MshIdx
+  real(4) :: SolTab(*)
+  end subroutine gmfgetsolatedger4
+end interface
+
+interface
+  subroutine gmfgetsolatedger8(MshIdx, SolTab)
+  integer :: MshIdx
+  real(8) :: SolTab(*)
+  end subroutine gmfgetsolatedger8
+end interface
+
+interface
+  subroutine gmfsetsolatedger4(MshIdx, SolTab)
+  integer :: MshIdx
+  real(4) :: SolTab(*)
+  end subroutine gmfsetsolatedger4
+end interface
+
+interface
+  subroutine gmfsetsolatedger8(MshIdx, SolTab)
+  integer :: MshIdx
+  real(8) :: SolTab(*)
+  end subroutine gmfsetsolatedger8
+end interface
+
+interface
+  subroutine gmfgetsolattriangler4(MshIdx, SolTab)
+  integer :: MshIdx
+  real(4) :: SolTab(*)
+  end subroutine gmfgetsolattriangler4
+end interface
+
+interface
+  subroutine gmfgetsolattriangler8(MshIdx, SolTab)
+  integer :: MshIdx
+  real(8) :: SolTab(*)
+  end subroutine gmfgetsolattriangler8
+end interface
+
+interface
+  subroutine gmfsetsolattriangler4(MshIdx, SolTab)
+  integer :: MshIdx
+  real(4) :: SolTab(*)
+  end subroutine gmfsetsolattriangler4
+end interface
+
+interface
+  subroutine gmfsetsolattriangler8(MshIdx, SolTab)
+  integer :: MshIdx
+  real(8) :: SolTab(*)
+  end subroutine gmfsetsolattriangler8
+end interface
+
+interface
+  subroutine gmfgetsolatquadrilateralr4(MshIdx, SolTab)
+  integer :: MshIdx
+  real(4) :: SolTab(*)
+  end subroutine gmfgetsolatquadrilateralr4
+end interface
+
+interface
+  subroutine gmfgetsolatquadrilateralr8(MshIdx, SolTab)
+  integer :: MshIdx
+  real(8) :: SolTab(*)
+  end subroutine gmfgetsolatquadrilateralr8
+end interface
+
+interface
+  subroutine gmfsetsolatquadrilateralr4(MshIdx, SolTab)
+  integer :: MshIdx
+  real(4) :: SolTab(*)
+  end subroutine gmfsetsolatquadrilateralr4
+end interface
+
+interface
+  subroutine gmfsetsolatquadrilateralr8(MshIdx, SolTab)
+  integer :: MshIdx
+  real(8) :: SolTab(*)
+  end subroutine gmfsetsolatquadrilateralr8
+end interface
+
+interface
+  subroutine gmfgetsolattetrahedronr4(MshIdx, SolTab)
+  integer :: MshIdx
+  real(4) :: SolTab(*)
+  end subroutine gmfgetsolattetrahedronr4
+end interface
+
+interface
+  subroutine gmfgetsolattetrahedronr8(MshIdx, SolTab)
+  integer :: MshIdx
+  real(8) :: SolTab(*)
+  end subroutine gmfgetsolattetrahedronr8
+end interface
+
+interface
+  subroutine gmfsetsolattetrahedronr4(MshIdx, SolTab)
+  integer :: MshIdx
+  real(4) :: SolTab(*)
+  end subroutine gmfsetsolattetrahedronr4
+end interface
+
+interface
+  subroutine gmfsetsolattetrahedronr8(MshIdx, SolTab)
+  integer :: MshIdx
+  real(8) :: SolTab(*)
+  end subroutine gmfsetsolattetrahedronr8
+end interface
+
+interface
+  subroutine gmfgetsolatpentahedronr4(MshIdx, SolTab)
+  integer :: MshIdx
+  real(4) :: SolTab(*)
+  end subroutine gmfgetsolatpentahedronr4
+end interface
+
+interface
+  subroutine gmfgetsolatpentahedronr8(MshIdx, SolTab)
+  integer :: MshIdx
+  real(8) :: SolTab(*)
+  end subroutine gmfgetsolatpentahedronr8
+end interface
+
+interface
+  subroutine gmfsetsolatpentahedronr4(MshIdx, SolTab)
+  integer :: MshIdx
+  real(4) :: SolTab(*)
+  end subroutine gmfsetsolatpentahedronr4
+end interface
+
+interface
+  subroutine gmfsetsolatpentahedronr8(MshIdx, SolTab)
+  integer :: MshIdx
+  real(8) :: SolTab(*)
+  end subroutine gmfsetsolatpentahedronr8
+end interface
+
+interface
+  subroutine gmfgetsolathexahedronr4(MshIdx, SolTab)
+  integer :: MshIdx
+  real(4) :: SolTab(*)
+  end subroutine gmfgetsolathexahedronr4
+end interface
+
+interface
+  subroutine gmfgetsolathexahedronr8(MshIdx, SolTab)
+  integer :: MshIdx
+  real(8) :: SolTab(*)
+  end subroutine gmfgetsolathexahedronr8
+end interface
+
+interface
+  subroutine gmfsetsolathexahedronr4(MshIdx, SolTab)
+  integer :: MshIdx
+  real(4) :: SolTab(*)
+  end subroutine gmfsetsolathexahedronr4
+end interface
+
+interface
+  subroutine gmfsetsolathexahedronr8(MshIdx, SolTab)
+  integer :: MshIdx
+  real(8) :: SolTab(*)
+  end subroutine gmfsetsolathexahedronr8
+end interface
+
+interface
+  subroutine gmfgetdsolatvertexr4(MshIdx, SolTab)
+  integer :: MshIdx
+  real(4) :: SolTab(*)
+  end subroutine gmfgetdsolatvertexr4
+end interface
+
+interface
+  subroutine gmfgetdsolatvertexr8(MshIdx, SolTab)
+  integer :: MshIdx
+  real(8) :: SolTab(*)
+  end subroutine gmfgetdsolatvertexr8
+end interface
+
+interface
+  subroutine gmfsetdsolatvertexr4(MshIdx, SolTab)
+  integer :: MshIdx
+  real(4) :: SolTab(*)
+  end subroutine gmfsetdsolatvertexr4
+end interface
+
+interface
+  subroutine gmfsetdsolatvertexr8(MshIdx, SolTab)
+  integer :: MshIdx
+  real(8) :: SolTab(*)
+  end subroutine gmfsetdsolatvertexr8
+end interface
+
+interface
+  subroutine gmfgetisolatvertex(MshIdx, i0)
+  integer :: MshIdx
+  integer :: i0
+  end subroutine gmfgetisolatvertex
+end interface
+
+interface
+  subroutine gmfsetisolatvertex(MshIdx, i0)
+  integer :: MshIdx
+  integer :: i0
+  end subroutine gmfsetisolatvertex
+end interface
+
+interface
+  subroutine gmfgetisolatedge(MshIdx, i0, i1)
+  integer :: MshIdx
+  integer :: i0
+  integer :: i1
+  end subroutine gmfgetisolatedge
+end interface
+
+interface
+  subroutine gmfsetisolatedge(MshIdx, i0, i1)
+  integer :: MshIdx
+  integer :: i0
+  integer :: i1
+  end subroutine gmfsetisolatedge
+end interface
+
+interface
+  subroutine gmfgetisolattriangle(MshIdx, i0, i1, i2)
+  integer :: MshIdx
+  integer :: i0
+  integer :: i1
+  integer :: i2
+  end subroutine gmfgetisolattriangle
+end interface
+
+interface
+  subroutine gmfsetisolattriangle(MshIdx, i0, i1, i2)
+  integer :: MshIdx
+  integer :: i0
+  integer :: i1
+  integer :: i2
+  end subroutine gmfsetisolattriangle
+end interface
+
+interface
+  subroutine gmfgetisolatquadrilateral(MshIdx, i0, i1, i2, i3)
+  integer :: MshIdx
+  integer :: i0
+  integer :: i1
+  integer :: i2
+  integer :: i3
+  end subroutine gmfgetisolatquadrilateral
+end interface
+
+interface
+  subroutine gmfsetisolatquadrilateral(MshIdx, i0, i1, i2, i3)
+  integer :: MshIdx
+  integer :: i0
+  integer :: i1
+  integer :: i2
+  integer :: i3
+  end subroutine gmfsetisolatquadrilateral
+end interface
+
+interface
+  subroutine gmfgetisolattetrahedron(MshIdx, i0, i1, i2, i3)
+  integer :: MshIdx
+  integer :: i0
+  integer :: i1
+  integer :: i2
+  integer :: i3
+  end subroutine gmfgetisolattetrahedron
+end interface
+
+interface
+  subroutine gmfsetisolattetrahedron(MshIdx, i0, i1, i2, i3)
+  integer :: MshIdx
+  integer :: i0
+  integer :: i1
+  integer :: i2
+  integer :: i3
+  end subroutine gmfsetisolattetrahedron
+end interface
+
+interface
+  subroutine gmfgetisolatpentahedron(MshIdx, i0, i1, i2, i3, i4, i5)
+  integer :: MshIdx
+  integer :: i0
+  integer :: i1
+  integer :: i2
+  integer :: i3
+  integer :: i4
+  integer :: i5
+  end subroutine gmfgetisolatpentahedron
+end interface
+
+interface
+  subroutine gmfsetisolatpentahedron(MshIdx, i0, i1, i2, i3, i4, i5)
+  integer :: MshIdx
+  integer :: i0
+  integer :: i1
+  integer :: i2
+  integer :: i3
+  integer :: i4
+  integer :: i5
+  end subroutine gmfsetisolatpentahedron
+end interface
+
+interface
+  subroutine gmfgetisolathexahedron(MshIdx, i0, i1, i2, i3, i4, i5, i6, i7)
+  integer :: MshIdx
+  integer :: i0
+  integer :: i1
+  integer :: i2
+  integer :: i3
+  integer :: i4
+  integer :: i5
+  integer :: i6
+  integer :: i7
+  end subroutine gmfgetisolathexahedron
+end interface
+
+interface
+  subroutine gmfsetisolathexahedron(MshIdx, i0, i1, i2, i3, i4, i5, i6, i7)
+  integer :: MshIdx
+  integer :: i0
+  integer :: i1
+  integer :: i2
+  integer :: i3
+  integer :: i4
+  integer :: i5
+  integer :: i6
+  integer :: i7
+  end subroutine gmfsetisolathexahedron
+end interface
+
+integer,parameter :: GmfMaxSol=20
+integer,parameter :: GmfMaxTyp=20
+integer,parameter :: GmfMaxKwd=79
+integer,parameter :: GmfRead=1
+integer,parameter :: GmfWrite=2
+integer,parameter :: GmfSca=1
+integer,parameter :: GmfVec=2
+integer,parameter :: GmfSymMat=3
+integer,parameter :: GmfMat=4
+
+integer,parameter :: GmfMeshVersionFormatted=1
+integer,parameter :: GmfDimension=3
+integer,parameter :: GmfVertices=4
+integer,parameter :: GmfEdges=5
+integer,parameter :: GmfTriangles=6
+integer,parameter :: GmfQuadrilaterals=7
+integer,parameter :: GmfTetrahedra=8
+integer,parameter :: GmfPentahedra=9
+integer,parameter :: GmfHexahedra=10
+integer,parameter :: GmfCorners=13
+integer,parameter :: GmfRidges=14
+integer,parameter :: GmfRequiredVertices=15
+integer,parameter :: GmfRequiredEdges=16
+integer,parameter :: GmfRequiredTriangles=17
+integer,parameter :: GmfRequiredQuadrilaterals=18
+integer,parameter :: GmfTangentAtEdgeVertices=19
+integer,parameter :: GmfNormalAtVertices=20
+integer,parameter :: GmfNormalAtTriangleVertices=21
+integer,parameter :: GmfNormalAtQuadrilateralVertices=22
+integer,parameter :: GmfAngleOfCornerBound=23
+integer,parameter :: GmfBoundingBox=50
+integer,parameter :: GmfEnd=54
+integer,parameter :: GmfTangents=59
+integer,parameter :: GmfNormals=60
+integer,parameter :: GmfTangentAtVertices=61
+integer,parameter :: GmfSolAtVertices=62
+integer,parameter :: GmfSolAtEdges=63
+integer,parameter :: GmfSolAtTriangles=64
+integer,parameter :: GmfSolAtQuadrilaterals=65
+integer,parameter :: GmfSolAtTetrahedra=66
+integer,parameter :: GmfSolAtPentahedra=67
+integer,parameter :: GmfSolAtHexahedra=68
+integer,parameter :: GmfDSolAtVertices=69
+integer,parameter :: GmfISolAtVertices=70
+integer,parameter :: GmfISolAtEdges=71
+integer,parameter :: GmfISolAtTriangles=72
+integer,parameter :: GmfISolAtQuadrilaterals=73
+integer,parameter :: GmfISolAtTetrahedra=74
+integer,parameter :: GmfISolAtPentahedra=75
+integer,parameter :: GmfISolAtHexahedra=76
+integer,parameter :: GmfIterations=77
+integer,parameter :: GmfTime=78
+
+
+  integer , external :: GmfGetVertex2dF77,&
+  & GmfGetVertex3dF77, GmfSetF77, GmfSetVertex3dF77,&
+  & GmfGetTriangleF77, GmfSetTriangleF77, GmfGetTetrahedronF77,&
+  & GmfSetTetrahedronF77, GmfGetEdgeF77, GmfSetEdgeF77,&
+  & GmfGetQuadrilateralF77, GmfSetQuadrilateralF77,&
+  & GmfGetHexahedronF77, GmfSetHexahedronF77,&
+  & GmfSetSolF77, GmfGetSolF77,&
+  & GmfSetVertex2dF77
+
+end module M_libmesh5_api
+

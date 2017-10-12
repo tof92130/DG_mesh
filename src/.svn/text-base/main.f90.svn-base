@@ -1,0 +1,744 @@
+!> Main Program
+!!
+!<
+
+program main
+  !-----------------------------------
+  use omp_lib
+  !-----------------------------------
+  use moduleMesh, only: &
+  &  meshF             ,&
+  &  applyHomethety    ,&
+  &  getBaryCenter     ,&
+  &  setBaryCenter     ,&
+  &  build_skin        ,&
+  &  cflAnalyser       ,&
+  &  compare_meshes    ,&
+  &  connected_mesh    ,&
+  &  connected_solu    ,&
+  &  control_cells     ,&
+  &  create_box        ,&
+  &  create_cart_box   ,&
+  &  cut2DTocut3D      ,&
+  &  cut_mesh          ,&
+  &  cut_solu          ,&
+  &  cylindric         ,&
+  &  delete_skin       ,&
+  &  display           ,&
+  &  extract_skin      ,&
+  &  get_geo           ,&
+  &  get_nT4           ,&
+  &  get_suffix        ,&
+  &  hexa2tetra_mesh   ,&
+  &  hexa2tetra_solu   ,&
+  &  interpolate       ,&
+  &  inverse_triangles ,&
+  &  keep_skin_marked  ,&
+  &  keep_vertices     ,&
+  &  merge_meshes      ,&
+  &  mesh_mark         ,&
+  &  mesh_skin3D       ,&
+  &  metric_mesh       ,&
+  &  project_mesh      ,&
+  &  quadr2tria_mesh   ,&
+  &  read_mesh_ensight ,&
+  &  read_mesh_actran  ,&
+  &  read_mesh         ,&
+  &  read_solu         ,&
+  &  rotate_mesh       ,&
+  &  rotate_solu       ,&
+  &  scale_mesh        ,&
+  &  get_name_mesh     ,&
+  &  set_name_mesh     ,&
+  &  set_name_solu     ,&
+  &  set_nlog          ,&
+  &  normal_mesh       ,&
+  &  replace_mark      ,&
+  &  smouth_solu       ,&
+  &  symetric_mesh     ,&
+  &  symetric_solu     ,&
+  &  translate_mesh    ,&
+  &  trim_mesh         ,&
+  &  trim_solu         ,&
+  &  write_gradient    ,&
+  &  write_mesh        ,&
+  &  write_solu        ,&
+  &  mesh_v3d          ,&
+  &  init_mesh_v3d     ,&
+  &  read_mesh_v3d
+  !-----------------------------------
+  implicit none
+
+  type(meshF)           :: myMesh
+  type(meshF)           :: myOtherMesh
+  
+  type(mesh_v3d)        :: v3dMesh
+
+  integer               :: i1,i2,i3,i4,i5,i6
+  integer               :: n1,n2,n3,n4
+  integer               :: idx0=1
+  integer               :: idx1=1
+  integer               :: idx
+  integer               :: nlog=6
+  character(12)         :: char0
+  character(256)        :: command
+  character(256)        :: name0,name,name_i,mesh,mesh1
+  character(256)        :: key0,key1
+  character(8)          :: today,date
+  
+  character(3)          :: sfx
+  !
+  integer               :: i,j,k,l,m,n,mem,geo,ker
+  integer               :: nfields
+  integer               :: res
+  logical               :: same
+  integer , allocatable :: index(:)
+  logical , allocatable :: inside(:)
+  
+  logical               :: cut2DTo3D   =.false.
+  logical               :: box         =.false.
+  logical               :: BiDim       =.false.
+  logical               :: ascii       =.false.
+  logical               :: buildSkin   =.false.
+  logical               :: cartSkin    =.false.
+  logical               :: cfl         =.false.
+  logical               :: connect     =.false.
+  logical               :: control     =.false.
+  logical               :: compare     =.false.
+  logical               :: cut         =.false.
+  logical               :: debugg      =.false.  
+  logical               :: file        =.false.
+  logical               :: file_actran =.false.
+  logical               :: file_ensight=.false.
+  logical               :: file_v3d    =.false.
+  logical               :: hex2tet     =.false.
+  logical               :: homethety   =.false.
+  logical               :: interpol    =.false.
+  logical               :: inv_trian   =.false.
+  logical               :: markmsh     =.false.
+  logical               :: metric      =.false.
+  logical               :: normal      =.false.
+  logical               :: project     =.false.
+  logical               :: quad2tri    =.false.
+  logical               :: skin        =.false.
+  logical               :: skin_mark   =.false.
+  logical               :: replace     =.false.
+  logical               :: rot         =.false.
+  logical               :: scale       =.false.
+  logical               :: serie       =.false.
+  logical               :: sym         =.false.
+  logical               :: translation =.false.
+  logical               :: trime       =.false.
+  logical               :: vert        =.false.
+  logical               :: merge       =.false.
+  logical               :: grad        =.false.
+  logical               :: skin3D      =.false.
+  logical               :: cyl         =.false.
+  logical               :: smouthSolu  =.false.
+  !
+  logical               :: solution    =.true.
+  integer               :: dn(0:9)
+  real(8)               :: t0,t1
+  integer               :: thread,nb_threads
+  real(8)               :: coef, omega
+  real(8) , parameter   :: pi=3.14159265358979
+  integer               :: iRot,iSym
+  !-----------------------------------
+ !command="clear" ; call system(command)
+ !command="date"  ; call system(command)
+  include 'compil_date.h'
+
+  call set_nlog(myMesh,nlog)
+
+  !$omp parallel 
+  !$omp single
+  nb_threads = OMP_GET_NUM_THREADS()
+  write(nlog,'(a,i2,a)')'OpenMP multithreading on ',nb_threads,' cores'
+  !$omp end single
+  !$omp end parallel 
+
+  !-----------------------------
+  ! Configuration
+  !-----------------------------
+
+  i1=0
+  do
+    i1=i1+1 ; call getarg(i1,key1)
+   !write(nlog,*)'i1=',i1,' key1=',key1
+    select case( trim(key1) )
+    case('-a'  )
+      serie=.true.
+      idx0=-1 ; idx1=-1
+      i1=i1+1 ; call getarg(i1,key0)
+      i1=i1+1 ; call getarg(i1,key1)
+      !write(nlog,*)'idx0=',key0!ichar(key0),iachar(key0)
+      !write(nlog,*)'idx1=',key1!ichar(key1),iachar(key1)
+      do j=0,10000
+        if(               j<   10 )write(char0,'(i1)')j
+        if( j>=  10 .and. j<  100 )write(char0,'(i2)')j
+        if( j>= 100 .and. j< 1000 )write(char0,'(i3)')j
+        if( j>=1000 .and. j<10000 )write(char0,'(i4)')j
+       !write(nlog,'(3(a,1x)))')trim(char0),trim(key0),trim(key1)
+        if( trim(key0)==trim(char0) )idx0=j
+        if( trim(key1)==trim(char0) )idx1=j
+        if(idx0/=-1 .and. idx1/=-1 )exit
+      enddo
+      if(idx0==-1 .or. idx1==-1 )then
+        write(nlog,'(a)')'Error on integer limits'
+        write(nlog,'(a)')'Stop @ space_mesh'
+        stop
+      endif
+
+      if( idx0>idx1 )then
+        k=idx0
+        idx0=idx1
+        idx1=k
+      endif
+
+      if( idx1-idx0>2 .and. .not.debugg)then
+        nlog=100
+        call set_nlog(myMesh,nlog)
+        open(unit=nlog,file='space_mesh.log',form='formatted')
+      endif
+      
+      k=(idx1-idx0)/10
+      do j=0,9
+        dn(j)=idx0+j*k
+      enddo
+    
+    case('-2D'       ) ; biDim    =.true.
+    case('-3D'       ) ; cut2DTo3D=.true.
+    case('-cyl'      ) ; cyl    =.true.
+    case('-ascii'    ) ; ascii  =.true.
+    case('-buildSkin') ; buildSkin=.true.
+    case('-box'      ) ; box    =.true.
+    case('-cartSkin' ) ; cartSkin=.true.
+    case('-cfl'      ) ; cfl=.true.
+    case('-connect'  ) ; connect=.true. 
+    case('-control') ; control=.true. 
+    case('-compare')
+      compare=.true.
+      i1=i1+1 ; call getarg(i1,mesh ) ; call set_name_mesh(myMesh     ,mesh )
+      i1=i1+1 ; call getarg(i1,mesh1) ; call set_name_mesh(myOtherMesh,mesh1)
+    case('-cut'   )  ; cut    =.true.
+    case('-d'     )  ; debugg =.true.
+    case('-f'     )
+      file=.true.
+      i1=i1+1 ; call getarg(i1,mesh)
+      call set_name_mesh(myMesh,mesh)
+    case('-fa'     )
+      file_actran=.true.
+      i1=i1+1 ; call getarg(i1,mesh)
+      call set_name_mesh(myMesh,mesh)
+    case('-fe'     )
+      file_ensight=.true.
+      i1=i1+1 ; call getarg(i1,mesh)
+      call set_name_mesh(myMesh,mesh)
+    case('-grad'     ) ; grad      =.true.
+    case('-hex2tet'  ) ; hex2tet   =.true.
+    case('-homethety') ; homethety =.true.
+    case('-interpolate' )
+      interpol=.true.
+      i1=i1+1 ; call getarg(i1,mesh )
+      call set_name_mesh(myMesh,mesh )
+      call set_name_solu(myMesh,mesh)
+      !
+      i1=i1+1 ; call getarg(i1,mesh1)
+      call set_name_mesh(myOtherMesh,mesh1)
+      name=trim(mesh1)//'.solb'
+      call set_name_solu(myOtherMesh,name)
+    case('-inv_trian') ; inv_trian =.true.
+    case('-mark'     ) ; markmsh   =.true.
+    case('-merge'    )
+      merge=.true.
+      i1=i1+1 ; call getarg(i1,mesh) ; call set_name_mesh(myMesh     ,mesh)
+      i1=i1+1 ; call getarg(i1,mesh) ; call set_name_mesh(myOtherMesh,mesh)
+    case('-metric'  ) ; metric     =.true.
+    case('-normal'  ) ; normal     =.true.
+    case('-project' ) ; project    =.true.
+    case('-quad2tri') ; quad2tri   =.true.
+    case('-rot'     ) ; rot        =.true.
+    case('-replace' ) ; replace    =.true.
+    case('-scale'   ) ; scale      =.true.
+    case('-skin'    ) ; skin       =.true.
+    case('-skin3D'  ) ; skin3D     =.true.
+    case('-skin_m'  ) ; skin_mark  =.true.
+    case('-smouth'  ) ; smouthSolu =.true.
+    case('-sym'     ) ; sym        =.true.
+    case('-trans'  )  ; translation=.true.
+    case('-v3d'    )  ; file_v3d   =.true.
+
+      i1=i1+1 ; call getarg(i1,key0)
+      !write(nlog,*)'idx0=',key0!ichar(key0),iachar(key0)
+      nfields=-1
+      do j=0,10000
+        if(               j<   10 )write(char0,'(i1)')j
+        if( j>=  10 .and. j<  100 )write(char0,'(i2)')j
+        if( j>= 100 .and. j< 1000 )write(char0,'(i3)')j
+        if( j>=1000 .and. j<10000 )write(char0,'(i4)')j
+       !write(nlog,'(3(a,1x)))')trim(char0),trim(key0),trim(key1)
+        if( trim(key0)==trim(char0) )nfields=j
+        if(nfields/=-1 )exit
+      enddo
+      if(nfields==-1 )then
+        write(nlog,'(a)')'Error on integer limits'
+        write(nlog,'(a)')'Stop @ space_mesh'
+        stop
+      endif
+
+      i1=i1+1 ; call getarg(i1,mesh )
+      i1=i1+1 ; call getarg(i1,name )
+      i1=i1+1 ; call getarg(i1,mesh1)
+
+       call init_mesh_v3d(  &
+       &  ob=v3dMesh       ,&
+       &  input_mesh=mesh  ,&
+       &  input_solu=name  ,&
+       &  output_mesh=mesh1,&
+       &  nfields=nfields   )
+
+    case('-vert'    ) ; vert      =.true.
+    case('-trim'    ) ; trime     =.true.
+    case(' ')
+      exit
+    case default
+      !write(nlog,'(/"Unkonw option: ",a/)')trim(key1)
+    
+      write(nlog,'( a )')"usage: space_mesh [-2D] [-a <int> <int>] [-box] [-buildSkin] [-cartSkin] [-cfl] [-connect] [-control]"
+      write(nlog,'( a )')"                  [-compare <mesh> <mesh>] [-cut] [-d] [-f <mesh>] [-fa <mesh (actran)>] [-fe <mesh (ensight)>]"
+      write(nlog,'( a )')"                  [-grad] [-help][-hex2tet]  [-homethety] [-interpolate <mesh> <mesh>] [-inv_trian] [-mark]"
+      write(nlog,'( a )')"                  [-merge <mesh> <mesh>][-metric] [-normal] [-project] [-quad2tri] [-replace] [-rot] [-scale]"
+      write(nlog,'( a )')"                  [-skin] [-skin3D][-sym] [-trans] [-trim] [-vert]"
+      write(nlog,'( a )')"                  [-v3d <int> <input_mesh> <input_solu> <output_mesh>]"
+      write(nlog,'(   )')
+      write(nlog,'( a )')"   -2D               :  Force geometry to be 2D";
+      write(nlog,'( a )')"   -3D               :  2D Mesh is Transform as 3D Mesh assuming z=0";
+      write(nlog,'( a )')"   -cyl              :  (x,y,z) -> cylindric coordinates (r,theta,z)";
+      write(nlog,'( a )')"   -a                :  Define limits"
+      write(nlog,'( a )')"   -ascii            :  ascii output"
+      write(nlog,'( a )')"   -box              :  Create a mesh of a specific Bounding Box"
+      write(nlog,'( a )')"   -buildSkin        :  Buid the skin if not any"
+      write(nlog,'( a )')"   -cartSkin         :  Build a cartesian skin around the domain"
+      write(nlog,'( a )')"   -cfl              :  Study the CFL condition of the mesh"
+      write(nlog,'( a )')"   -connect          :  Keep Vertices connected to Cells and supress other"
+      write(nlog,'( a )')"   -control          :  Control the orientation of Cells"
+      write(nlog,'( a )')"   -compare          :  Compare two solutions"
+      write(nlog,'( a )')"   -cut              :  Cut a subdomain"
+      write(nlog,'( a )')"   -d                :  Debugg mode"
+      write(nlog,'( a )')"   -f  xxx(.mesh(b)) :  Name of mesh file that may come with (.sol(b))"
+      write(nlog,'( a )')"   -fa xxx           :  Name of mesh file (actran format)"
+      write(nlog,'( a )')"   -fe xxx(.case)    :  Name of mesh file (ensight format)"
+      write(nlog,'( a )')"   -grad             :  Compute gradients of solution with P1 approximation"
+      write(nlog,'( a )')"   -help             :  Print this help "
+      write(nlog,'( a )')"   -hex2tet          :  Convert Hexahedra to Tetrahedra"
+      write(nlog,'( a )')"   -homethety        :  Apply an homohety of factor k and center=baryCenter";
+      write(nlog,'( a )')"   -interpolate      :  Interpolate solutions from mesh1 to mesh2"
+      write(nlog,'( a )')"   -inv_trian        :  Inverse all triangles (n1,n2,n3) -> (n1,n3,n2)"
+      write(nlog,'( a )')"   -merge            :  Merge 2 meshes and create the merged mesh"
+      write(nlog,'( a )')"   -mark             :  mark the mesh skin (file xxx.mark required)"
+      write(nlog,'( a )')"   -metric           :  Build a metric for mesh adaptation"
+      write(nlog,'( a )')"   -normal           :  Compute skin normals"
+      write(nlog,'( a )')"   -project          :  Project a part of the mesh"
+      write(nlog,'( a )')"   -quad2tri         :  Convert Quads to Triangles"
+      write(nlog,'( a )')"   -replace          :  Replace some mesh markers"
+      write(nlog,'( a )')"   -rot              :  Rotate mesh and solution"
+      write(nlog,'( a )')"   -scale            :  Rescale (x,y,z)";
+      write(nlog,'( a )')"   -skin             :  Extract skin cells";
+      write(nlog,'( a )')"   -skin3D           :  Creates a 3D skin mesh from a 2D-axi mesh";
+      write(nlog,'( a )')"   -skin_m           :  Extract skin cells with specific marks";
+      write(nlog,'( a )')"   -smouth           :  Smouth Solution (under developpement)";
+      write(nlog,'( a )')"   -sym              :  Make an axial symmetry";
+      write(nlog,'( a )')"   -trans            :  Translate mesh and solution"
+      write(nlog,'( a )')"   -trim             :  Supress extra vertices";
+      write(nlog,'( a )')"   -vert             :  Export list of vertices in file vertices.txt";
+      write(nlog,'( a )')"   -v3d              :  Read voir3d format end export it to Inria Mesh";
+      stop
+    end select
+  enddo
+
+  !-----------------------------
+  ! Treatment of the Mesh
+  !-----------------------------
+
+  idx=idx0
+  if( serie )call get_suffix(i=idx,sfx=sfx)
+
+  ! Reading the Mesh File
+
+  call cpu_time(t0)
+
+
+  if( box )then
+    call create_box(myMesh)
+  endif
+
+  if( homethety )then
+    call read_mesh      (ob=myMesh)
+    call applyHomethety (ob=myMesh)
+    name=trim(mesh)//'Homothety'
+    !
+    select case(ascii)
+    case(.true. ) ; name=trim(name)//'.mesh'
+    case(.false.) ; name=trim(name)//'.meshb'
+    end select
+    !
+    call set_name_mesh(ob=myMesh,in=name)
+    call write_mesh   (ob=myMesh,skin=skin)
+    
+    stop
+  endif
+
+  if( cartSkin )then
+    call read_mesh      (ob=myMesh)
+    call create_cart_box(ob=myMesh,box=myOtherMesh)
+    call connected_mesh (ob=myOtherMesh,nCell=index)
+    call build_skin     (ob=myOtherMesh)
+    call extract_skin   (ob=myOtherMesh,BiDim=.false.)
+
+    name='cartSkin'
+    select case(ascii)
+    case(.true. ) ; name=trim(name)//'.mesh'
+    case(.false.) ; name=trim(name)//'.meshb'
+    end select
+    !
+    call set_name_mesh(myOtherMesh,name)
+    call write_mesh   (myOtherMesh,skin)
+
+    stop
+  endif
+
+  if( cfl )then
+    call read_mesh      (ob=myMesh)
+    call cflAnalyser    (ob=myMesh,ascii=ascii)    
+    stop
+  endif
+
+
+  if( compare )then
+    call set_nlog(myMesh     ,10)
+    call set_nlog(myOtherMesh,10)
+
+    call read_mesh(myMesh)
+    call set_name_solu(myMesh,mesh)
+    call read_solu(myMesh)
+    !
+    call read_mesh(myOtherMesh)
+    call set_name_solu(myOtherMesh,mesh1)
+    call read_solu(myOtherMesh)
+    !
+    call compare_meshes(myMesh,myOtherMesh,same)
+    !
+    if( same )then
+      write(*,'(/6x,"Good Agreement !"/)')
+    endif
+  endif
+
+
+  if( grad )then
+    call set_nlog(myMesh     ,10)
+
+    call read_mesh(myMesh)
+    call set_name_solu(myMesh,mesh)
+    call read_solu(myMesh)
+    !
+    call write_gradient(myMesh)
+    !
+    stop
+  endif
+
+
+  if( skin3D )then
+    call read_mesh  (myMesh)
+    call mesh_skin3D(myMesh,ascii)
+    stop
+  endif
+
+  if( cyl )then
+    call read_mesh  (myMesh)
+    call cylindric  (myMesh)
+    stop  
+  endif
+
+  if( cut2DTo3D )then
+    print '("coucou cut2DTo3D")'
+    call read_mesh   (ob  =myMesh)
+    call cut2DTocut3D(ob2D=myMesh)
+    stop
+  endif
+
+  if( merge )then
+    call read_mesh   (ob=myMesh)
+    call read_mesh   (ob=myOtherMesh)
+    call merge_meshes(ob1=myMesh,ob2=myOtherMesh)
+    call trim_mesh   (myMesh,index)
+    !
+    name='merged'
+    select case(ascii)
+    case(.true. ) ; name=trim(name)//'.mesh'
+    case(.false.) ; name=trim(name)//'.meshb'
+    end select
+    !
+    call set_name_mesh(myMesh,name)
+    call write_mesh   (myMesh,skin)
+    stop
+  endif
+
+
+  ! interpolation
+
+  if( interpol )then
+    call read_mesh    (myMesh)
+    call read_solu    (myMesh)
+    !
+    call read_mesh    (myOtherMesh)
+    call interpolate  (myMesh,myOtherMesh)
+    call write_solu   (myOtherMesh)
+    stop
+  endif
+
+
+  ! Readers
+
+  if( file_v3d )then
+    call read_mesh_v3d(ob0=v3dMesh, ob1=myMesh)
+    stop
+  endif
+
+
+  if( file_actran )then
+    call read_mesh_actran(myMesh)
+    call connected_mesh  (myMesh,index)
+    call connected_solu  (myMesh,index)
+    !
+    name0=get_name_mesh(myMesh)
+    select case(ascii)
+    case(.true. ) ; name=trim(name0)//'.mesh'
+    case(.false.) ; name=trim(name0)//'.meshb'
+    end select
+    call set_name_mesh(myMesh,name)
+    call write_mesh   (myMesh,skin)
+    !
+    name=get_name_mesh(myMesh)
+    select case(ascii)
+    case(.true. ) ; name=trim(name0)//'.sol'
+    case(.false.) ; name=trim(name0)//'.solb'
+    end select
+    call set_name_solu(myMesh,name)
+    call write_solu   (myMesh)
+    !
+    stop
+  endif
+
+
+  if( file_ensight )then
+    select case(serie)
+    case(.true.  ) ; name=trim(mesh)//'.'//trim(sfx)
+    case(.false. ) ; name=trim(mesh)  
+    end select
+    call set_name_mesh(myMesh,name)
+    call read_mesh_ensight(myMesh)
+    !
+    select case(ascii)
+    case(.true. ) ; name=trim(name)//'.mesh'
+    case(.false.) ; name=trim(name)//'.meshb'
+    end select
+    call set_name_mesh(myMesh,name)
+    !
+    call write_mesh   (myMesh,skin)
+  endif
+
+
+  if( file )then
+    select case(serie)
+    case(.true. ) ; name=trim(mesh)//'.'//trim(sfx)
+    case(.false.) ; name=trim(mesh)  
+    end select
+    call set_name_mesh(myMesh,name)
+    call read_mesh(myMesh)
+   !write(nlog,'(/"Starting the Treatments of Mesh ",a/)')trim(name)
+    if( replace )then
+      call replace_mark(myMesh)
+    endif
+
+    if( buildSkin )then
+      call build_skin(myMesh)
+    endif
+
+
+    if( quad2tri )then
+      if( get_nT4(myMesh)/=0 )then
+        call delete_skin    (myMesh)
+        call quadr2tria_mesh(myMesh)
+        call control_cells  (myMesh)
+        call build_skin     (myMesh)
+      else
+        call quadr2tria_mesh(myMesh)
+      endif
+    endif
+
+    if( hex2tet )then
+      call delete_skin    (myMesh)
+      call hexa2tetra_mesh(myMesh)
+      call control_cells  (myMesh)    
+      call build_skin     (myMesh)
+    endif
+
+    if( control )then
+      call control_cells(myMesh)
+    endif
+
+    if( cut )then
+      call delete_skin  (myMesh)
+      call cut_mesh     (myMesh,inside)
+     !call control_cells(myMesh)
+      call build_skin   (myMesh)
+    endif
+
+
+    if( project )then
+      call delete_skin  (myMesh)
+      call project_mesh (myMesh,inside)
+      call control_cells(myMesh)
+      call build_skin   (myMesh)
+    endif
+
+    if( connect )then
+      call connected_mesh(myMesh,index)
+    endif
+
+    if( trime )then
+      call trim_mesh(myMesh,index)
+    endif
+
+    if( inv_trian )then
+      call inverse_triangles(myMesh)
+    endif
+
+    if( scale )then
+      call scale_mesh(myMesh)
+    endif
+
+    if( smouthSolu )then
+      name=trim(mesh)
+      !
+      call set_name_solu(myMesh,name)
+      call read_solu  (ob=myMesh)
+      call smouth_solu(ob=myMesh)
+      stop
+    endif
+
+
+    if( rot )then
+      call rotate_mesh(myMesh,iRot,omega,BiDim)
+    endif
+
+    if( translation )then
+      call translate_mesh(myMesh)
+    endif
+
+
+    if( sym )then
+      call symetric_mesh(myMesh,iSym,BiDim)
+    endif
+
+    if( normal  )then
+      call normal_mesh(myMesh)
+    endif
+
+    if( metric  )then
+      call metric_mesh(myMesh,ascii)
+    endif
+
+    if( markmsh )then
+      call mesh_mark(myMesh)
+    endif
+
+
+    if( skin  )then
+      call extract_skin(myMesh,BiDim)
+    endif
+
+    if( skin_mark )then
+      call keep_skin_marked(myMesh,BiDim)
+    endif
+
+
+    do idx=idx0,idx1    
+      call get_suffix(i=idx,sfx=sfx)
+      select case(serie)
+      case(.true. ) ;  name=trim(mesh)//'m.'//trim(sfx)
+      case(.false.) ;  name=trim(mesh)//'m'
+      end select
+      !
+      select case(ascii)
+      case(.true. ) ; name=trim(name)//'.mesh'
+      case(.false.) ; name=trim(name)//'.meshb'
+      end select
+      !
+      if( idx==idx0 )then
+        !
+        name0=name
+        call set_name_mesh(myMesh,name0)
+        call write_mesh   (myMesh,skin )
+        !
+      else
+        command='ln -fs '//trim(name0)//' '//trim(name) ; call system(trim(command))
+        write(*,*)trim(command)
+        write(nlog,'(4a/)')'Linking Mesh File: ',trim(name),' to Mesh File: ',trim(name0)
+      endif
+    
+      ! -------------------------------
+      ! Reading the Solu File
+      call cpu_time(t0)
+
+      select case(serie)
+      case(.true.  ) ; name=trim(mesh)//'.'//trim(sfx)
+      case(.false. ) ; name=trim(mesh)
+      end select
+      !
+      call set_name_solu(myMesh,name)
+      call read_solu    (myMesh)
+
+     !write(nlog,'(/2a/)')'Starting the Treatments of Solutions ',trim(name)
+
+      if( hex2tet    ) call hexa2tetra_solu(myMesh)
+      if( cut        ) call cut_solu       (myMesh,inside)
+      if( connect    ) call connected_solu (myMesh,index)
+      if( trime      ) call trim_solu      (myMesh,index)
+      if( sym        ) call symetric_solu  (myMesh,iSym,BiDim)
+      if( rot        ) call rotate_solu    (myMesh,iRot,omega,BiDim)
+
+      select case(serie)
+      case(.true.  ) ; name=trim(mesh)//'m.'//trim(sfx)
+      case(.false.)  ; name=trim(mesh)//'m'
+      end select
+      !
+      select case(ascii)
+      case(.true. ) ; name=trim(name)//'.sol'
+      case(.false.) ; name=trim(name)//'.solb'
+      end select
+
+     !call display(myMesh)
+      call set_name_solu(myMesh,name)
+      call write_solu   (myMesh)
+      !
+      if( serie .and. nlog/=6 )then
+        if( idx==dn(0) )write(*,'(a)')' 0% of treatment completed' 
+        if( idx==dn(1) )write(*,'(a)')'10% of treatment completed' 
+        if( idx==dn(2) )write(*,'(a)')'20% of treatment completed' 
+        if( idx==dn(3) )write(*,'(a)')'30% of treatment completed' 
+        if( idx==dn(4) )write(*,'(a)')'40% of treatment completed' 
+        if( idx==dn(5) )write(*,'(a)')'50% of treatment completed' 
+        if( idx==dn(6) )write(*,'(a)')'60% of treatment completed' 
+        if( idx==dn(7) )write(*,'(a)')'70% of treatment completed' 
+        if( idx==dn(8) )write(*,'(a)')'80% of treatment completed' 
+        if( idx==dn(9) )write(*,'(a)')'90% of treatment completed'
+      endif
+    enddo
+
+    if( vert ) call keep_vertices(myMesh,BiDim)
+    !
+  endif
+
+end program main
+

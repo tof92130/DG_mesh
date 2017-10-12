@@ -1,0 +1,251 @@
+module m_vtk
+
+  implicit none
+  private
+
+  interface writeVtkASCII       ; module procedure m_WriteVtkASCII                   ; end interface
+  public :: writeVtkASCII
+
+  interface writeVtkBINARY      ; module procedure m_WriteVtkBIN                     ; end interface
+  public :: writeVtkBINARY
+
+
+contains
+
+
+
+  subroutine m_WriteVtkASCII(fileOut, geo, vertx, tetra, trian, edges, nFields, kind, solu, solAtVertx)
+    !------------------------------------------------------
+    ! m_WriteVtkASCII writes mesh data in Ensight's binary format
+    !------------------------------------------------------
+    implicit none
+    character(256), intent(in) :: fileOut
+    integer       , intent(in) :: geo
+    real(8)       , intent(in) :: vertx(:,:)
+    integer       , optional   :: tetra(:,:)
+    integer       , optional   :: trian(:,:)
+    integer       , optional   :: edges(:,:)
+    logical                    :: solAtVertx
+    integer                    :: nFields
+    integer                    :: kind (:)
+    real(8)                    :: solu (:,:)
+    !------------------------------------------------------
+    integer                    :: nVt
+    integer                    :: nT4=0
+    integer                    :: nT3=0
+    integer                    :: nL2=0
+    integer                    :: nsol
+    integer                    :: i0,i,j
+    !------------------------------------------------------
+    write(*,'(3x"Writing ASCII VTK file: ",a)')trim(fileOut)
+    ! Writing vtk
+
+    nVt=size(vertx,2) ; write(*,'(6x,"number of vertx=",i10)')nVt
+
+    if( present(tetra) )then
+      nT4=size(tetra,2) ; write(*,'(6x,"number of tetra=",i10)')nT4
+    else
+      nT4=0
+    endif
+
+    if( present(trian) )then
+      nT3=size(trian,2) ; write(*,'(6x,"number of trian=",i10)')nT3
+    else
+      nT3=0
+    endif
+
+    if( present(edges) )then
+      nL2=size(edges,2) ; write(*,'("number of edges=",i10)')nL2
+    else
+      nL2=0
+    endif
+    !    
+
+
+    open(300, file=trim(fileOut),status='unknown', action='write')
+    write(300,'("# vtk DataFile Version 3.0")')
+    write(300,'("vtk output")')
+    write(300,'("ASCII")')
+    write(300,'("DATASET UNSTRUCTURED_GRID")')
+    write(300,'("POINTS ",i10," float")')nVt
+    select case(geo)
+    case(2) ; write(300,'(3(e12.5,1x))')( [vertx(1:2,j),0d0] , j=1,nVt)
+    case(3) ; write(300,'(3(e12.5,1x))')( [vertx(1:3,j)    ] , j=1,nVt)
+    end select
+    !
+    write(300,'(/"CELLS ",2(i8,1x))' )nT4+nT3+nL2 ,5*nT4+4*nT3+3*nL2
+    if( nT4/=0 )write(300,'(i1,1x,4(i8,1x))')( [4, tetra(1:4,j)-1] , j=1,nT4)
+    if( nT3/=0 )write(300,'(i1,1x,3(i8,1x))')( [3, trian(1:3,j)-1] , j=1,nT3)
+    if( nL2/=0 )write(300,'(i1,1x,2(i8,1x))')( [2, edges(1:2,j)-1] , j=1,nL2)
+    !
+    write(300,'(/"CELL_TYPES ",i10)')nT4+nT3+nL2
+    if( nT4/=0 )write(300,'(i2)')( 10, j=1,nT4) ! Tetra
+    if( nT3/=0 )write(300,'(i2)')(  5, j=1,nT3) ! Triangles
+    if( nL2/=0 )write(300,'(i2)')(  3, j=1,nL2) ! Edges
+    !
+    ! writting solution
+    !
+    nSol=size(solu,2)
+    write(*,'(6x,"number of fields=",i10)')nFields
+    write(*,'(6x,"number of solutions=",i10)')nsol
+
+    if( solAtVertx )then
+      write(300,'(/"POINT_DATA ",i10)')nSol
+    else
+      write(300,'(/"CELL_DATA ",i10)')nSol
+    endif
+    i0=1
+    do i=1,nFields
+      select case( kind(i) )
+      case(1)
+        write(300,'(/"SCALARS scalar",i1," float")')i
+        write(*  ,'(6x,"SCALARS scalar",i1," float")')i
+        write(300,'("LOOKUP_TABLE default")')
+        write(300,'(1(e12.5,1x))')(solu(i0,j), j=1,nSol)
+        i0=i0+1
+      case(2)
+        write(300,'(/"VECTORS vector",i1," float")')i
+        write(*  ,'(6x,"VECTORS vector",i1," float")')i
+        select case(geo)
+        case(2) ; write(300,'(3(e12.5,1x))')( [solu(i0:i0+1,j),0d0] , j=1,nSol) ; i0=i0+2
+        case(3) ; write(300,'(3(e12.5,1x))')( [solu(i0:i0+2,j)    ] , j=1,nSol) ; i0=i0+3
+        end select
+      end select
+    enddo
+    write(300,'(/)')
+    close(300)
+    
+  end subroutine m_WriteVtkASCII
+  
+  
+  subroutine m_WriteVtkBIN(fileOut, geo, vertx, tetra, trian, edges, nFields, kind, solu, solAtVertx)
+    !------------------------------------------------------
+    ! m_WriteVtkASCII writes mesh data in Ensight's binary format
+    !------------------------------------------------------
+    character(256), intent(in) :: fileOut
+    integer       , intent(in) :: geo
+    real(8)       , intent(in) :: vertx(:,:)
+    integer       , optional   :: tetra(:,:)
+    integer       , optional   :: trian(:,:)
+    integer       , optional   :: edges(:,:)
+    logical                    :: solAtVertx
+    integer                    :: nFields
+    integer                    :: kind (:)
+    real(8)                    :: solu (:,:)
+    !------------------------------------------------------
+    integer                    :: nVt
+    integer                    :: nT4=0
+    integer                    :: nT3=0
+    integer                    :: nL2=0
+    integer                    :: iSol,nSol
+    integer                    :: i0,i,j
+    !------------------------------------------------------
+    integer, parameter         :: ivtk = 9
+    character(8)               :: fieldName
+    integer                    :: iField,ad
+    character(80)              :: buffer
+    character(01)              :: lf
+    character(08)              :: str1,str2
+    !------------------------------------------------------
+    write(*,'(3x"Writing BINARY VTK file: ",a)')trim(fileOut)
+
+    nVt=size(vertx,2)   ; print '(6x,"number of vertx:    ",i10)',nVt
+
+    if( present(tetra) )then
+      nT4=size(tetra,2) ; print '(6x,"number of tetra:    ",i10)',nT4
+    else
+      nT4=0
+    endif
+
+    if( present(trian) )then
+      nT3=size(trian,2) ; print '(6x,"number of trian:    ",i10)',nT3
+    else
+      nT3=0
+    endif
+
+    if( present(edges) )then
+      nL2=size(edges,2) ; print '("number of edges:       ",i10)',nL2
+    else
+      nL2=0
+    endif
+
+    !------------------------------------------------------
+    lf = char(10) ! line feed character
+    !------------------------------------------------------
+
+    open(unit=ivtk                                                       ,&
+    &    file=trim(fileOut)                                              ,&
+    &    form='binary'                                                   ,&
+    &    convert='BIG_ENDIAN'                                             )
+  
+    buffer = '# vtk DataFile Version 3.0'//lf                             ; write(ivtk) trim(buffer)
+    buffer = 'vtk output'//lf                                             ; write(ivtk) trim(buffer)
+    buffer = 'BINARY'//lf                                                 ; write(ivtk) trim(buffer)
+    buffer = 'DATASET UNSTRUCTURED_GRID'//lf//lf                          ; write(ivtk) trim(buffer)
+
+    ! POINTS SECTION
+
+    write(str1(1:8),'(i8)')nVt
+    buffer = 'POINTS '//str1//'  double'//lf                              ; write(ivtk) trim(buffer)
+    select case(geo)
+    case(2) ; write(ivtk) ([vertx(1:geo,j),0d0],j=1,nVt)
+    case(3) ; write(ivtk) ([vertx(1:geo,j)    ],j=1,nVt)
+    end select
+    !
+    write(str1(1:8),'(i8)')   nT4+  nT3+  nL2
+    write(str2(1:8),'(i8)') 5*nT4+4*nT3+3*nL2
+    buffer = lf//lf//'CELLS '//str1//' '//str2//lf                        ; write(ivtk) trim(buffer)
+
+    write(ivtk) (4 ,(tetra(i,j)-1,i=1,4),j=1,nT4)
+    write(ivtk) (3 ,(trian(i,j)-1,i=1,3),j=1,nT3)
+    write(ivtk) (2 ,(edges(i,j)-1,i=1,2),j=1,nL2)
+    
+    write(str1(1:8),'(i8)') nT4+nT3+nL2
+    buffer = lf//lf//'CELL_TYPES'//str1//lf                               ; write(ivtk) trim(buffer)
+
+    write(ivtk) (10,i=1,nT4)
+    write(ivtk) ( 5,i=1,nT3)
+    write(ivtk) ( 3,i=1,nL2)
+    
+    
+    ! DATA SECTION
+    
+    nSol=size(solu,2)
+    print'(6x,"number of solutions:",i2,"x",i10)',nFields,nSol
+
+    if( solAtVertx )then
+      buffer = lf//lf//'POINT_DATA '//str1//lf                            ; write(ivtk) trim(buffer)
+    else
+      buffer = lf//lf//'CELL_DATA '//str1//lf                             ; write(ivtk) trim(buffer)
+    endif
+
+    ad=1
+    do iField=1,nFields
+      !
+      if    (     iField<  10)then ; write(fieldName,'("Field",i1)')iField
+      elseif( 10<=iField< 100)then ; write(fieldName,'("Field",i2)')iField
+      elseif(100<=iField<1000)then ; write(fieldName,'("Field",i3)')iField
+      endif
+      !
+      select case( kind(i) )
+      case(1)
+        buffer = lf//'SCALARS '//trim(fieldName)//' double'//lf           ; write(ivtk) trim(buffer)
+        buffer = 'LOOKUP_TABLE default'//lf                               ; write(ivtk) trim(buffer)
+        write(ivtk) (solu(ad,iSol),iSol=1,nSol)
+        ad=ad+1
+      case(2)
+        buffer = lf//'VECTORS '//trim(fieldName)//' double'//lf           ; write(ivtk) trim(buffer)
+        select case(geo)
+        case(2) ; write(ivtk) ([solu(ad:ad+1,j),0d0] ,j=1,nSol)
+        case(3) ; write(ivtk) ([solu(ad:ad+2,j)    ] ,j=1,nSol)
+        end select
+        ad=ad+geo
+      end select
+    enddo
+  
+    close(ivtk)
+    
+    return
+  end subroutine m_WriteVtkBIN
+
+end module m_vtk

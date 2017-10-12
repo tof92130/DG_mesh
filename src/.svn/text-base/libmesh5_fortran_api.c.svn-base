@@ -1,0 +1,524 @@
+#include "libmesh5.h"
+
+/* Generated automatically by libmesh5.2 */
+
+void call(gmfgetvertex2dr4)(int *MshIdx, float *r0, float *r1, int *i2)
+{
+	GmfGetLin(*MshIdx, GmfVertices, r0, r1, i2);
+}
+
+void call(gmfgetvertex2dr8)(int *MshIdx, double *r0, double *r1, int *i2)
+{
+	GmfGetLin(*MshIdx, GmfVertices, r0, r1, i2);
+}
+
+void call(gmfgetvertex3dr4)(int *MshIdx, float *r0, float *r1, float *r2, int *i3)
+{
+	GmfGetLin(*MshIdx, GmfVertices, r0, r1, r2, i3);
+}
+
+void call(gmfgetvertex3dr8)(int *MshIdx, double *r0, double *r1, double *r2, int *i3)
+{
+	GmfGetLin(*MshIdx, GmfVertices, r0, r1, r2, i3);
+}
+
+void call(gmfsetvertex2dr4)(int *MshIdx, float *r0, float *r1, int *i2)
+{
+	GmfSetLin(*MshIdx, GmfVertices, *r0, *r1, *i2);
+}
+
+void call(gmfsetvertex2dr8)(int *MshIdx, double *r0, double *r1, int *i2)
+{
+	GmfSetLin(*MshIdx, GmfVertices, *r0, *r1, *i2);
+}
+
+void call(gmfsetvertex3dr4)(int *MshIdx, float *r0, float *r1, float *r2, int *i3)
+{
+	GmfSetLin(*MshIdx, GmfVertices, *r0, *r1, *r2, *i3);
+}
+
+void call(gmfsetvertex3dr8)(int *MshIdx, double *r0, double *r1, double *r2, int *i3)
+{
+	GmfSetLin(*MshIdx, GmfVertices, *r0, *r1, *r2, *i3);
+}
+
+void call(gmfgetedge)(int *MshIdx, int *i0, int *i1, int *i2)
+{
+	GmfGetLin(*MshIdx, GmfEdges, i0, i1, i2);
+}
+
+void call(gmfsetedge)(int *MshIdx, int *i0, int *i1, int *i2)
+{
+	GmfSetLin(*MshIdx, GmfEdges, *i0, *i1, *i2);
+}
+
+void call(gmfgettriangle)(int *MshIdx, int *i0, int *i1, int *i2, int *i3)
+{
+	GmfGetLin(*MshIdx, GmfTriangles, i0, i1, i2, i3);
+}
+
+void call(gmfsettriangle)(int *MshIdx, int *i0, int *i1, int *i2, int *i3)
+{
+	GmfSetLin(*MshIdx, GmfTriangles, *i0, *i1, *i2, *i3);
+}
+
+void call(gmfgetquadrilateral)(int *MshIdx, int *i0, int *i1, int *i2, int *i3, int *i4)
+{
+	GmfGetLin(*MshIdx, GmfQuadrilaterals, i0, i1, i2, i3, i4);
+}
+
+void call(gmfsetquadrilateral)(int *MshIdx, int *i0, int *i1, int *i2, int *i3, int *i4)
+{
+	GmfSetLin(*MshIdx, GmfQuadrilaterals, *i0, *i1, *i2, *i3, *i4);
+}
+
+void call(gmfgettetrahedron)(int *MshIdx, int *i0, int *i1, int *i2, int *i3, int *i4)
+{
+	GmfGetLin(*MshIdx, GmfTetrahedra, i0, i1, i2, i3, i4);
+}
+
+void call(gmfsettetrahedron)(int *MshIdx, int *i0, int *i1, int *i2, int *i3, int *i4)
+{
+	GmfSetLin(*MshIdx, GmfTetrahedra, *i0, *i1, *i2, *i3, *i4);
+}
+
+void call(gmfgetpentahedron)(int *MshIdx, int *i0, int *i1, int *i2, int *i3, int *i4, int *i5, int *i6)
+{
+	GmfGetLin(*MshIdx, GmfPentahedra, i0, i1, i2, i3, i4, i5, i6);
+}
+
+void call(gmfsetpentahedron)(int *MshIdx, int *i0, int *i1, int *i2, int *i3, int *i4, int *i5, int *i6)
+{
+	GmfSetLin(*MshIdx, GmfPentahedra, *i0, *i1, *i2, *i3, *i4, *i5, *i6);
+}
+
+void call(gmfgethexahedron)(int *MshIdx, int *i0, int *i1, int *i2, int *i3, int *i4, int *i5, int *i6, int *i7, int *i8)
+{
+	GmfGetLin(*MshIdx, GmfHexahedra, i0, i1, i2, i3, i4, i5, i6, i7, i8);
+}
+
+void call(gmfsethexahedron)(int *MshIdx, int *i0, int *i1, int *i2, int *i3, int *i4, int *i5, int *i6, int *i7, int *i8)
+{
+	GmfSetLin(*MshIdx, GmfHexahedra, *i0, *i1, *i2, *i3, *i4, *i5, *i6, *i7, *i8);
+}
+
+void call(gmfgetcorner)(int *MshIdx, int *i0)
+{
+	GmfGetLin(*MshIdx, GmfCorners, i0);
+}
+
+void call(gmfsetcorner)(int *MshIdx, int *i0)
+{
+	GmfSetLin(*MshIdx, GmfCorners, *i0);
+}
+
+void call(gmfgetridge)(int *MshIdx, int *i0)
+{
+	GmfGetLin(*MshIdx, GmfRidges, i0);
+}
+
+void call(gmfsetridge)(int *MshIdx, int *i0)
+{
+	GmfSetLin(*MshIdx, GmfRidges, *i0);
+}
+
+void call(gmfgetrequiredvertex)(int *MshIdx, int *i0)
+{
+	GmfGetLin(*MshIdx, GmfRequiredVertices, i0);
+}
+
+void call(gmfsetrequiredvertex)(int *MshIdx, int *i0)
+{
+	GmfSetLin(*MshIdx, GmfRequiredVertices, *i0);
+}
+
+void call(gmfgetrequirededge)(int *MshIdx, int *i0)
+{
+	GmfGetLin(*MshIdx, GmfRequiredEdges, i0);
+}
+
+void call(gmfsetrequirededge)(int *MshIdx, int *i0)
+{
+	GmfSetLin(*MshIdx, GmfRequiredEdges, *i0);
+}
+
+void call(gmfgetrequiredtriangle)(int *MshIdx, int *i0)
+{
+	GmfGetLin(*MshIdx, GmfRequiredTriangles, i0);
+}
+
+void call(gmfsetrequiredtriangle)(int *MshIdx, int *i0)
+{
+	GmfSetLin(*MshIdx, GmfRequiredTriangles, *i0);
+}
+
+void call(gmfgetrequiredquadrilateral)(int *MshIdx, int *i0)
+{
+	GmfGetLin(*MshIdx, GmfRequiredQuadrilaterals, i0);
+}
+
+void call(gmfsetrequiredquadrilateral)(int *MshIdx, int *i0)
+{
+	GmfSetLin(*MshIdx, GmfRequiredQuadrilaterals, *i0);
+}
+
+void call(gmfgettangentatedgevertex)(int *MshIdx, int *i0, int *i1, int *i2)
+{
+	GmfGetLin(*MshIdx, GmfTangentAtEdgeVertices, i0, i1, i2);
+}
+
+void call(gmfsettangentatedgevertex)(int *MshIdx, int *i0, int *i1, int *i2)
+{
+	GmfSetLin(*MshIdx, GmfTangentAtEdgeVertices, *i0, *i1, *i2);
+}
+
+void call(gmfgetnormalatvertex)(int *MshIdx, int *i0, int *i1)
+{
+	GmfGetLin(*MshIdx, GmfNormalAtVertices, i0, i1);
+}
+
+void call(gmfsetnormalatvertex)(int *MshIdx, int *i0, int *i1)
+{
+	GmfSetLin(*MshIdx, GmfNormalAtVertices, *i0, *i1);
+}
+
+void call(gmfgetnormalattrianglevertex)(int *MshIdx, int *i0, int *i1, int *i2)
+{
+	GmfGetLin(*MshIdx, GmfNormalAtTriangleVertices, i0, i1, i2);
+}
+
+void call(gmfsetnormalattrianglevertex)(int *MshIdx, int *i0, int *i1, int *i2)
+{
+	GmfSetLin(*MshIdx, GmfNormalAtTriangleVertices, *i0, *i1, *i2);
+}
+
+void call(gmfgetnormalatquadrilateralvertex)(int *MshIdx, int *i0, int *i1, int *i2, int *i3)
+{
+	GmfGetLin(*MshIdx, GmfNormalAtQuadrilateralVertices, i0, i1, i2, i3);
+}
+
+void call(gmfsetnormalatquadrilateralvertex)(int *MshIdx, int *i0, int *i1, int *i2, int *i3)
+{
+	GmfSetLin(*MshIdx, GmfNormalAtQuadrilateralVertices, *i0, *i1, *i2, *i3);
+}
+
+void call(gmfgettangent2dr4)(int *MshIdx, float *r0, float *r1)
+{
+	GmfGetLin(*MshIdx, GmfTangents, r0, r1);
+}
+
+void call(gmfgettangent2dr8)(int *MshIdx, double *r0, double *r1)
+{
+	GmfGetLin(*MshIdx, GmfTangents, r0, r1);
+}
+
+void call(gmfgettangent3dr4)(int *MshIdx, float *r0, float *r1, float *r2)
+{
+	GmfGetLin(*MshIdx, GmfTangents, r0, r1, r2);
+}
+
+void call(gmfgettangent3dr8)(int *MshIdx, double *r0, double *r1, double *r2)
+{
+	GmfGetLin(*MshIdx, GmfTangents, r0, r1, r2);
+}
+
+void call(gmfsettangent2dr4)(int *MshIdx, float *r0, float *r1)
+{
+	GmfSetLin(*MshIdx, GmfTangents, *r0, *r1);
+}
+
+void call(gmfsettangent2dr8)(int *MshIdx, double *r0, double *r1)
+{
+	GmfSetLin(*MshIdx, GmfTangents, *r0, *r1);
+}
+
+void call(gmfsettangent3dr4)(int *MshIdx, float *r0, float *r1, float *r2)
+{
+	GmfSetLin(*MshIdx, GmfTangents, *r0, *r1, *r2);
+}
+
+void call(gmfsettangent3dr8)(int *MshIdx, double *r0, double *r1, double *r2)
+{
+	GmfSetLin(*MshIdx, GmfTangents, *r0, *r1, *r2);
+}
+
+void call(gmfgetnormal2dr4)(int *MshIdx, float *r0, float *r1)
+{
+	GmfGetLin(*MshIdx, GmfNormals, r0, r1);
+}
+
+void call(gmfgetnormal2dr8)(int *MshIdx, double *r0, double *r1)
+{
+	GmfGetLin(*MshIdx, GmfNormals, r0, r1);
+}
+
+void call(gmfgetnormal3dr4)(int *MshIdx, float *r0, float *r1, float *r2)
+{
+	GmfGetLin(*MshIdx, GmfNormals, r0, r1, r2);
+}
+
+void call(gmfgetnormal3dr8)(int *MshIdx, double *r0, double *r1, double *r2)
+{
+	GmfGetLin(*MshIdx, GmfNormals, r0, r1, r2);
+}
+
+void call(gmfsetnormal2dr4)(int *MshIdx, float *r0, float *r1)
+{
+	GmfSetLin(*MshIdx, GmfNormals, *r0, *r1);
+}
+
+void call(gmfsetnormal2dr8)(int *MshIdx, double *r0, double *r1)
+{
+	GmfSetLin(*MshIdx, GmfNormals, *r0, *r1);
+}
+
+void call(gmfsetnormal3dr4)(int *MshIdx, float *r0, float *r1, float *r2)
+{
+	GmfSetLin(*MshIdx, GmfNormals, *r0, *r1, *r2);
+}
+
+void call(gmfsetnormal3dr8)(int *MshIdx, double *r0, double *r1, double *r2)
+{
+	GmfSetLin(*MshIdx, GmfNormals, *r0, *r1, *r2);
+}
+
+void call(gmfgettangentatvertex)(int *MshIdx, int *i0, int *i1)
+{
+	GmfGetLin(*MshIdx, GmfTangentAtVertices, i0, i1);
+}
+
+void call(gmfsettangentatvertex)(int *MshIdx, int *i0, int *i1)
+{
+	GmfSetLin(*MshIdx, GmfTangentAtVertices, *i0, *i1);
+}
+
+void call(gmfgetsolatvertexr4)(int *MshIdx, float *SolTab)
+{
+	GmfGetLin(*MshIdx, GmfSolAtVertices, SolTab);
+}
+
+void call(gmfgetsolatvertexr8)(int *MshIdx, double *SolTab)
+{
+	GmfGetLin(*MshIdx, GmfSolAtVertices, SolTab);
+}
+
+void call(gmfsetsolatvertexr4)(int *MshIdx, float *SolTab)
+{
+	GmfSetLin(*MshIdx, GmfSolAtVertices, SolTab);
+}
+
+void call(gmfsetsolatvertexr8)(int *MshIdx, double *SolTab)
+{
+	GmfSetLin(*MshIdx, GmfSolAtVertices, SolTab);
+}
+
+void call(gmfgetsolatedger4)(int *MshIdx, float *SolTab)
+{
+	GmfGetLin(*MshIdx, GmfSolAtEdges, SolTab);
+}
+
+void call(gmfgetsolatedger8)(int *MshIdx, double *SolTab)
+{
+	GmfGetLin(*MshIdx, GmfSolAtEdges, SolTab);
+}
+
+void call(gmfsetsolatedger4)(int *MshIdx, float *SolTab)
+{
+	GmfSetLin(*MshIdx, GmfSolAtEdges, SolTab);
+}
+
+void call(gmfsetsolatedger8)(int *MshIdx, double *SolTab)
+{
+	GmfSetLin(*MshIdx, GmfSolAtEdges, SolTab);
+}
+
+void call(gmfgetsolattriangler4)(int *MshIdx, float *SolTab)
+{
+	GmfGetLin(*MshIdx, GmfSolAtTriangles, SolTab);
+}
+
+void call(gmfgetsolattriangler8)(int *MshIdx, double *SolTab)
+{
+	GmfGetLin(*MshIdx, GmfSolAtTriangles, SolTab);
+}
+
+void call(gmfsetsolattriangler4)(int *MshIdx, float *SolTab)
+{
+	GmfSetLin(*MshIdx, GmfSolAtTriangles, SolTab);
+}
+
+void call(gmfsetsolattriangler8)(int *MshIdx, double *SolTab)
+{
+	GmfSetLin(*MshIdx, GmfSolAtTriangles, SolTab);
+}
+
+void call(gmfgetsolatquadrilateralr4)(int *MshIdx, float *SolTab)
+{
+	GmfGetLin(*MshIdx, GmfSolAtQuadrilaterals, SolTab);
+}
+
+void call(gmfgetsolatquadrilateralr8)(int *MshIdx, double *SolTab)
+{
+	GmfGetLin(*MshIdx, GmfSolAtQuadrilaterals, SolTab);
+}
+
+void call(gmfsetsolatquadrilateralr4)(int *MshIdx, float *SolTab)
+{
+	GmfSetLin(*MshIdx, GmfSolAtQuadrilaterals, SolTab);
+}
+
+void call(gmfsetsolatquadrilateralr8)(int *MshIdx, double *SolTab)
+{
+	GmfSetLin(*MshIdx, GmfSolAtQuadrilaterals, SolTab);
+}
+
+void call(gmfgetsolattetrahedronr4)(int *MshIdx, float *SolTab)
+{
+	GmfGetLin(*MshIdx, GmfSolAtTetrahedra, SolTab);
+}
+
+void call(gmfgetsolattetrahedronr8)(int *MshIdx, double *SolTab)
+{
+	GmfGetLin(*MshIdx, GmfSolAtTetrahedra, SolTab);
+}
+
+void call(gmfsetsolattetrahedronr4)(int *MshIdx, float *SolTab)
+{
+	GmfSetLin(*MshIdx, GmfSolAtTetrahedra, SolTab);
+}
+
+void call(gmfsetsolattetrahedronr8)(int *MshIdx, double *SolTab)
+{
+	GmfSetLin(*MshIdx, GmfSolAtTetrahedra, SolTab);
+}
+
+void call(gmfgetsolatpentahedronr4)(int *MshIdx, float *SolTab)
+{
+	GmfGetLin(*MshIdx, GmfSolAtPentahedra, SolTab);
+}
+
+void call(gmfgetsolatpentahedronr8)(int *MshIdx, double *SolTab)
+{
+	GmfGetLin(*MshIdx, GmfSolAtPentahedra, SolTab);
+}
+
+void call(gmfsetsolatpentahedronr4)(int *MshIdx, float *SolTab)
+{
+	GmfSetLin(*MshIdx, GmfSolAtPentahedra, SolTab);
+}
+
+void call(gmfsetsolatpentahedronr8)(int *MshIdx, double *SolTab)
+{
+	GmfSetLin(*MshIdx, GmfSolAtPentahedra, SolTab);
+}
+
+void call(gmfgetsolathexahedronr4)(int *MshIdx, float *SolTab)
+{
+	GmfGetLin(*MshIdx, GmfSolAtHexahedra, SolTab);
+}
+
+void call(gmfgetsolathexahedronr8)(int *MshIdx, double *SolTab)
+{
+	GmfGetLin(*MshIdx, GmfSolAtHexahedra, SolTab);
+}
+
+void call(gmfsetsolathexahedronr4)(int *MshIdx, float *SolTab)
+{
+	GmfSetLin(*MshIdx, GmfSolAtHexahedra, SolTab);
+}
+
+void call(gmfsetsolathexahedronr8)(int *MshIdx, double *SolTab)
+{
+	GmfSetLin(*MshIdx, GmfSolAtHexahedra, SolTab);
+}
+
+void call(gmfgetdsolatvertexr4)(int *MshIdx, float *SolTab)
+{
+	GmfGetLin(*MshIdx, GmfDSolAtVertices, SolTab);
+}
+
+void call(gmfgetdsolatvertexr8)(int *MshIdx, double *SolTab)
+{
+	GmfGetLin(*MshIdx, GmfDSolAtVertices, SolTab);
+}
+
+void call(gmfsetdsolatvertexr4)(int *MshIdx, float *SolTab)
+{
+	GmfSetLin(*MshIdx, GmfDSolAtVertices, SolTab);
+}
+
+void call(gmfsetdsolatvertexr8)(int *MshIdx, double *SolTab)
+{
+	GmfSetLin(*MshIdx, GmfDSolAtVertices, SolTab);
+}
+
+void call(gmfgetisolatvertex)(int *MshIdx, int *i0)
+{
+	GmfGetLin(*MshIdx, GmfISolAtVertices, i0);
+}
+
+void call(gmfsetisolatvertex)(int *MshIdx, int *i0)
+{
+	GmfSetLin(*MshIdx, GmfISolAtVertices, *i0);
+}
+
+void call(gmfgetisolatedge)(int *MshIdx, int *i0, int *i1)
+{
+	GmfGetLin(*MshIdx, GmfISolAtEdges, i0, i1);
+}
+
+void call(gmfsetisolatedge)(int *MshIdx, int *i0, int *i1)
+{
+	GmfSetLin(*MshIdx, GmfISolAtEdges, *i0, *i1);
+}
+
+void call(gmfgetisolattriangle)(int *MshIdx, int *i0, int *i1, int *i2)
+{
+	GmfGetLin(*MshIdx, GmfISolAtTriangles, i0, i1, i2);
+}
+
+void call(gmfsetisolattriangle)(int *MshIdx, int *i0, int *i1, int *i2)
+{
+	GmfSetLin(*MshIdx, GmfISolAtTriangles, *i0, *i1, *i2);
+}
+
+void call(gmfgetisolatquadrilateral)(int *MshIdx, int *i0, int *i1, int *i2, int *i3)
+{
+	GmfGetLin(*MshIdx, GmfISolAtQuadrilaterals, i0, i1, i2, i3);
+}
+
+void call(gmfsetisolatquadrilateral)(int *MshIdx, int *i0, int *i1, int *i2, int *i3)
+{
+	GmfSetLin(*MshIdx, GmfISolAtQuadrilaterals, *i0, *i1, *i2, *i3);
+}
+
+void call(gmfgetisolattetrahedron)(int *MshIdx, int *i0, int *i1, int *i2, int *i3)
+{
+	GmfGetLin(*MshIdx, GmfISolAtTetrahedra, i0, i1, i2, i3);
+}
+
+void call(gmfsetisolattetrahedron)(int *MshIdx, int *i0, int *i1, int *i2, int *i3)
+{
+	GmfSetLin(*MshIdx, GmfISolAtTetrahedra, *i0, *i1, *i2, *i3);
+}
+
+void call(gmfgetisolatpentahedron)(int *MshIdx, int *i0, int *i1, int *i2, int *i3, int *i4, int *i5)
+{
+	GmfGetLin(*MshIdx, GmfISolAtPentahedra, i0, i1, i2, i3, i4, i5);
+}
+
+void call(gmfsetisolatpentahedron)(int *MshIdx, int *i0, int *i1, int *i2, int *i3, int *i4, int *i5)
+{
+	GmfSetLin(*MshIdx, GmfISolAtPentahedra, *i0, *i1, *i2, *i3, *i4, *i5);
+}
+
+void call(gmfgetisolathexahedron)(int *MshIdx, int *i0, int *i1, int *i2, int *i3, int *i4, int *i5, int *i6, int *i7)
+{
+	GmfGetLin(*MshIdx, GmfISolAtHexahedra, i0, i1, i2, i3, i4, i5, i6, i7);
+}
+
+void call(gmfsetisolathexahedron)(int *MshIdx, int *i0, int *i1, int *i2, int *i3, int *i4, int *i5, int *i6, int *i7)
+{
+	GmfSetLin(*MshIdx, GmfISolAtHexahedra, *i0, *i1, *i2, *i3, *i4, *i5, *i6, *i7);
+}
+
